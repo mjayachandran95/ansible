@@ -1,0 +1,17 @@
+---
+- name: System Health Check
+  hosts: all
+  gather_facts: yes
+  tasks:
+    - name: Check disk usage
+      shell: df -h
+      register: disk_output
+    - name: Display disk usage
+      debug:
+        var: disk_output.stdout_lines
+    - name: Assert CPU is under threshold
+      assert:
+        that:
+          - ansible_processor_cores <= 8
+
+  
